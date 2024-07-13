@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "egads-high-score-jam.sln"
+    "dotnet.defaultSolution": "EGADS High Score Jam.sln"
 }
