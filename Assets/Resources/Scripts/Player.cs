@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,6 +8,7 @@ public class Player : MonoBehaviour
     // Public variables
     public DataManager dataManager;
     public GameObject past, present;
+    public TextMeshProUGUI interactText;
     public float walkSpeed;
     public bool currentlyInPast;
 
@@ -16,10 +18,11 @@ public class Player : MonoBehaviour
 
     // Player stats
     private bool canSwitch;
+    private bool canInteract;
     private Vector2 otherPosition;
 
     // Touching Entities
-    private HashSet<Entity> touchingEntities = new HashSet<Entity>();
+    private HashSet<Entity> touchingEntities;
 
     void Awake() {
         mainCamera = Camera.main;
@@ -30,6 +33,7 @@ public class Player : MonoBehaviour
         currentlyInPast = false;
         canSwitch = true;
         otherPosition = new();
+        touchingEntities = new();
     }
 
     void Update() {
@@ -39,8 +43,7 @@ public class Player : MonoBehaviour
             // Change room idk, it might yield
             // switch positions
             currentlyInPast = !currentlyInPast;
-            otherPosition = transform.position;
-            transform.position = past.transform.position;
+            (transform.position, otherPosition) = (otherPosition, transform.position);
             if (currentlyInPast) {
                 past.SetActive(true);
                 present.SetActive(false);
@@ -63,27 +66,50 @@ public class Player : MonoBehaviour
         
 
         // Do entity interaction
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.E) && canInteract) {
+            // Only interact with the first entity, then hide UI
             foreach (Entity entity in touchingEntities) {
                 entity.Interact(this);
+                CloseInteractText();
+                break;
             }
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        Entity entity = collision.gameObject.GetComponent<Entity>();
-        if(entity != null) {
+        if(collider.TryGetComponent(out Entity entity)) {
+            if (entity.AutoInteract) {
+                entity.Interact(this);
+                return;
+            }
             touchingEntities.Add(entity);
+            OpenInteractText();
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    void OnTriggerExit2D(Collider2D collider)
     {
-        Entity entity = collision.gameObject.GetComponent<Entity>();
-        if(entity != null) {
+        if(collider.TryGetComponent(out Entity entity)) {
+            if (entity.AutoInteract)
+                return;
             touchingEntities.Remove(entity);
+            if (touchingEntities.Count == 0)
+                CloseInteractText();
         }
     }
 
+    private void OpenInteractText() {
+        if (canInteract)
+            return;
+        canInteract = true;
+        LeanTween.moveY(interactText.rectTransform, 20, 0.35f).setEaseOutQuad();
+    }
+
+    private void CloseInteractText() {
+        if (!canInteract)
+            return;
+        canInteract = false;
+        LeanTween.moveY(interactText.rectTransform, -40, 0.35f).setEaseOutQuad();
+    }
 }
