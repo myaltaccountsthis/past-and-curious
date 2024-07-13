@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : Entity
+public class Block : Collectible
 {
-    public override void Interact(Player player) {
-        player.CollectEntity(this);
-    }
+    
 }
