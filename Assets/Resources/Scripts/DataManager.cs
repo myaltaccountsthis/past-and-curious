@@ -4,6 +4,7 @@ using UnityEngine;
 
 public struct Data {
     public float time;
+    public int score;
 }
 
 public class DataManager : MonoBehaviour
