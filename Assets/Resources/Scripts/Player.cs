@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI interactText;
     public float walkSpeed;
     public bool currentlyInPast;
+    public EntityUI entityUI;
+    public InfoUI infoUI;
 
     // Other components
     private Camera mainCamera;
@@ -20,6 +22,10 @@ public class Player : MonoBehaviour
     private bool canSwitch;
     private bool canInteract;
     private Vector2 otherPosition;
+    private Entity currentEntity;
+    public Entity CurrentEntity {
+        get { return currentEntity; }
+    }
 
     // Touching Entities
     private HashSet<Entity> touchingEntities;
@@ -112,4 +118,30 @@ public class Player : MonoBehaviour
         canInteract = false;
         LeanTween.moveY(interactText.rectTransform, -40, 0.35f).setEaseOutQuad();
     }
+    // Collecting a box/thing into inventory
+    public bool CollectEntity(Entity entity) {
+        if (currentEntity == null) {
+            currentEntity = entity;
+            entityUI.DisplayEntity(entity);
+            entity.gameObject.SetActive(false);
+            return true;
+        }
+        return false;
+    }
+
+    // For signs or items that display info
+    public void DisplayEntityInfo(Sign entity) {
+        infoUI.DisplayInfo(entity);
+    }
+
+    // Using an entity (could be dropping)
+    public void UseEntity() {
+        if (currentEntity != null) {
+            currentEntity.transform.position = transform.position;
+            currentEntity.gameObject.SetActive(true);
+            currentEntity = null;
+            entityUI.RemoveEntity();
+        }
+    }
+
 }
