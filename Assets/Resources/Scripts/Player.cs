@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public bool currentlyInPast;
     public EntityUI entityUI;
     public InfoUI infoUI;
+    public Room startingRoom, startingRoomPast;
 
     // Other components
     private Camera mainCamera;
@@ -25,6 +26,8 @@ public class Player : MonoBehaviour
     private Vector2 otherPosition;
     private Collectible currentEntity;
     private Collectible otherEntity;
+    private Room currentRoom;
+    private Room otherRoom;
 
     // Touching Entities
     private HashSet<Entity> touchingEntities;
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
         canSwitch = true;
         otherPosition = new();
         touchingEntities = new();
+        currentRoom = startingRoom;
+        otherRoom = startingRoomPast;
     }
 
     void Update() {
@@ -49,7 +54,7 @@ public class Player : MonoBehaviour
 
         // Do player movement
         Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        if (input.magnitude > 0)
+        if (input.magnitude > 1)
             input.Normalize();
         Vector2 newPos = transform.position + Time.deltaTime * walkSpeed * (Vector3)input;
         rigidbody.MovePosition(newPos);
@@ -68,7 +73,7 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.TryGetComponent(out Entity entity)) {
+        if (collider.TryGetComponent(out Entity entity)) {
             if (entity.locked)
                 return;
             if (entity.AutoInteract) {
@@ -78,11 +83,19 @@ public class Player : MonoBehaviour
             touchingEntities.Add(entity);
             OpenInteractText();
         }
+        else if (collider.TryGetComponent(out Room room)) {
+            // Try to enter a new room (don't reactivate previous rooms)
+            if (!room.visited) {
+                room.Activate();
+                room.visited = true;
+            }
+            currentRoom = room;
+        }
     }
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        if(collider.TryGetComponent(out Entity entity)) {
+        if (collider.TryGetComponent(out Entity entity)) {
             if (entity.locked)
                 return;
             if (entity.AutoInteract)
@@ -102,6 +115,7 @@ public class Player : MonoBehaviour
         currentlyInPast = !currentlyInPast;
         (transform.position, otherPosition) = (otherPosition, transform.position);
         (currentEntity, otherEntity) = (otherEntity, currentEntity);
+        (currentRoom, otherRoom) = (otherRoom, currentRoom);
         if (currentEntity != null) {
             entityUI.DisplayEntity(currentEntity);
         }
@@ -161,4 +175,8 @@ public class Player : MonoBehaviour
         return false;
     }
 
+    public void Respawn() {
+        currentRoom.Activate();
+        transform.position = currentRoom.spawnLocation.position;
+    }
 }

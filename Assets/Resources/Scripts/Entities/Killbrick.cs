@@ -7,6 +7,6 @@ public class Killbrick : Entity
     public override bool AutoInteract => true;
 
     public override void Interact(Player player) {
-        Debug.Log("Killbrick");
+        player.Respawn();
     }
 }
