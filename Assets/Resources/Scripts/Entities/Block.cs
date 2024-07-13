@@ -5,6 +5,6 @@ using UnityEngine;
 public class Block : Entity
 {
     public override void Interact(Player player) {
-        Debug.Log("Yo yo yo");
+        player.CollectEntity(this);
     }
 }
