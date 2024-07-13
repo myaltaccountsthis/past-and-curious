@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -23,10 +24,8 @@ public class Player : MonoBehaviour
     private bool canSwitch;
     private bool canInteract;
     private Vector2 otherPosition;
-    private Entity currentEntity;
-    public Entity CurrentEntity {
-        get { return currentEntity; }
-    }
+    private Collectible currentEntity;
+    private Collectible otherEntity;
     private Room currentRoom;
     private Room otherRoom;
 
@@ -50,22 +49,7 @@ public class Player : MonoBehaviour
     void Update() {
         // Check for player inputs
         if (Input.GetKeyDown(KeyCode.Q) && canSwitch) {
-            canSwitch = false;
-            // Change room idk, it might yield
-            // switch positions
-            currentlyInPast = !currentlyInPast;
-            (transform.position, otherPosition) = (otherPosition, transform.position);
-            (currentRoom, otherRoom) = (otherRoom, currentRoom);
-            if (currentlyInPast) {
-                past.SetActive(true);
-                present.SetActive(false);
-            }
-            else {
-                past.SetActive(false);
-                present.SetActive(true);
-            }
-
-            canSwitch = true;
+            SwitchDimensions();
         }
 
         // Do player movement
@@ -91,6 +75,8 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out Entity entity)) {
+            if (entity.locked)
+                return;
             if (entity.AutoInteract) {
                 entity.Interact(this);
                 return;
@@ -111,12 +97,41 @@ public class Player : MonoBehaviour
     void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out Entity entity)) {
+            if (entity.locked)
+                return;
             if (entity.AutoInteract)
                 return;
             touchingEntities.Remove(entity);
             if (touchingEntities.Count == 0)
                 CloseInteractText();
         }
+    }
+
+    private void SwitchDimensions() {
+        canSwitch = false;
+        CloseInteractText();
+        // Change room idk, it might yield
+        // switch positions
+        currentlyInPast = !currentlyInPast;
+        (transform.position, otherPosition) = (otherPosition, transform.position);
+        (currentEntity, otherEntity) = (otherEntity, currentEntity);
+        (currentRoom, otherRoom) = (otherRoom, currentRoom);
+        if (currentEntity != null) {
+            entityUI.DisplayEntity(currentEntity);
+        }
+        else {
+            entityUI.RemoveEntity();
+        }
+        if (currentlyInPast) {
+            past.SetActive(true);
+            present.SetActive(false);
+        }
+        else {
+            past.SetActive(false);
+            present.SetActive(true);
+        }
+
+        canSwitch = true;
     }
 
     private void OpenInteractText() {
@@ -132,8 +147,9 @@ public class Player : MonoBehaviour
         canInteract = false;
         LeanTween.moveY(interactText.rectTransform, -40, 0.35f).setEaseOutQuad();
     }
+
     // Collecting a box/thing into inventory
-    public bool CollectEntity(Entity entity) {
+    public bool CollectEntity(Collectible entity) {
         if (currentEntity == null) {
             currentEntity = entity;
             entityUI.DisplayEntity(entity);
@@ -149,10 +165,12 @@ public class Player : MonoBehaviour
     }
 
     // Using an entity (could be dropping)
-    public void UseEntity() {
+    public void DropEntity(Collector entity) {
         if (currentEntity != null) {
-            currentEntity.transform.position = transform.position;
+            currentEntity.transform.position = entity.transform.position;
             currentEntity.gameObject.SetActive(true);
+            currentEntity.locked = true;
+            entity.locked = true;
             currentEntity = null;
             entityUI.RemoveEntity();
         }
