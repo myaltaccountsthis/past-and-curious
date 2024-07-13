@@ -11,6 +11,7 @@ public class PixelPerfectUI : MonoBehaviour
         MainCamera = Camera.main;
         AdjustScalingFactor();
     }
+
     void LateUpdate() {
         AdjustScalingFactor();
     }
