@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     // Other components
     private Camera mainCamera;
     private new Rigidbody2D rigidbody;
+    private Animator animator;
 
     // Player stats
     private bool canSwitch;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     void Awake() {
         mainCamera = Camera.main;
         rigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Start() {
@@ -54,12 +56,13 @@ public class Player : MonoBehaviour
 
         // Do player movement
         Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        animator.SetFloat("Horizontal", input.x);
+        animator.SetFloat("Vertical", input.y);
         if (input.magnitude > 1)
             input.Normalize();
         Vector2 newPos = transform.position + Time.deltaTime * walkSpeed * (Vector3)input;
         rigidbody.MovePosition(newPos);
         mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
-        
 
         // Do entity interaction
         if (Input.GetKeyDown(KeyCode.E) && canInteract) {
@@ -89,8 +92,9 @@ public class Player : MonoBehaviour
             if (!room.visited) {
                 room.Activate();
                 room.visited = true;
+                if (room.index > currentRoom.index)
+                    currentRoom = room;
             }
-            currentRoom = room;
         }
     }
 
