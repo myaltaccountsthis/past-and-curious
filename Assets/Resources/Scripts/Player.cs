@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
 
     private void SwitchDimensions() {
         canSwitch = false;
+        touchingEntities.Clear();
         CloseInteractText();
         // Change room idk, it might yield
         // switch positions
@@ -169,15 +170,14 @@ public class Player : MonoBehaviour
     }
 
     // Using an entity (could be dropping)
-    public void DropEntity(Collector entity) {
-        if (currentEntity != null) {
-            currentEntity.transform.position = entity.transform.position;
-            currentEntity.gameObject.SetActive(true);
-            currentEntity.locked = true;
-            entity.locked = true;
+    public bool DropEntity(Collector entity) {
+        if (currentEntity != null && currentEntity == entity.requiredCollectible) {
+            currentEntity.OnDrop(entity);
             currentEntity = null;
             entityUI.RemoveEntity();
+            return true;
         }
+        return false;
     }
 
     public void Respawn() {
