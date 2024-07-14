@@ -207,12 +207,11 @@ public class LaserRoom : MonoBehaviour
 
     IEnumerator ActivateLaser(SpriteRenderer renderer, Tuple<float, int, int, float> cell, float delay)
     {
-        AudioSource clone = Instantiate(laser, laser.transform.parent);
-        clone.Play();
         renderer.color = waitingColor;
         renderer.transform.SetParent(room.transform);
         renderer.transform.position = transform.position + new Vector3(cell.Item2 + .5f, cell.Item3 + .5f);
         yield return new WaitForSeconds(delay);
+        AudioSource.PlayClipAtPoint(laser.clip, laser.transform.position);
         renderer.GetComponent<Killbrick>().Locked = false;
         renderer.color = activeColor;
         // Destroy the laser .5 seconds after activating

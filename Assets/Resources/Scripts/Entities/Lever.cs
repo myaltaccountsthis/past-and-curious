@@ -21,6 +21,7 @@ public class Lever : Entity
         pastGate.gameObject.SetActive(false);
         presentGate.gameObject.SetActive(false);
         GetComponent<SpriteRenderer>().sprite = otherSprite;
+        GetComponent<AudioSource>().Play();
         player.AddScore(score);
     }
 }
