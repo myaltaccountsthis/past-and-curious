@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
                 letter = (char) Random.Range('a', 'z' + 1);
             } while (dict.ContainsKey(letter));
             
-            int digit = Random.Range(1, 10);
+            int digit = Random.Range(2, 10);
             noteRoom2[0].text += letter;
             passcode2.code += digit;
             dict.Add(letter, digit);

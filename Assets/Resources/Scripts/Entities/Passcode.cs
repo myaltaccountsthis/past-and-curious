@@ -71,6 +71,7 @@ public class Passcode : Entity
     {
         passcodeUI.text.color = Color.black;
         passcodeUI.text.text = defaultText;
+        enteredText = "";
     }
 
     public void InputDigit(int d)
