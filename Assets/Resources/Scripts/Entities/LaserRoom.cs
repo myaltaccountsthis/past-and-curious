@@ -24,6 +24,8 @@ public class LaserRoom : MonoBehaviour
     
     // Audio Sources
     public AudioSource laser;
+    public AudioSource mainMusic;
+    public AudioSource bossMusic;
 
     void Awake() {
         // LaserData[] fileLaserData = laserFile.text.Trim().Split('\n').Select(line => new LaserData() {Cells = line.Trim().Split(' ').Select(pair => pair.Split(',')).Select(pair => new Tuple<float, int, int, float>(float.Parse(pair[0]), int.Parse(pair[1]), int.Parse(pair[2]), pair.Length < 4 ? -1 : float.Parse(pair[3]))).ToArray()}).ToArray();
@@ -180,6 +182,8 @@ public class LaserRoom : MonoBehaviour
         Activated = true;
         Instantiate(wallPrefab, room.transform);
         StartCoroutine(ActivateLaserSequence(callback));
+        mainMusic.Stop();
+        bossMusic.Play();
     }
 
     IEnumerator ActivateLaserSequence(Action callback) {

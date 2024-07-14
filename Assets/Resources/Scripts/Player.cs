@@ -60,6 +60,9 @@ public class Player : MonoBehaviour
     public AudioSource itemPickup;
     public AudioSource itemDrop;
     public AudioSource laserDeath;
+    public AudioSource timeWarp;
+    public AudioSource mainMusic;
+    public AudioSource bossMusic;
 
     private string[] pangrams =
     {
@@ -197,6 +200,8 @@ public class Player : MonoBehaviour
         CloseInteractText();
 
         // Do funny effects
+        timeWarp.time = 0.7f;
+        timeWarp.Play();
         float t = 0, duration = .7f;
         float cameraOldSize = mainCamera.orthographicSize, cameraLargeSize = cameraOldSize * 1.5f, cameraSmallSize = .1f, cameraZoomOutSize = cameraOldSize * 5;
         pixelPerfectCamera.enabled = false;
@@ -397,5 +402,7 @@ public class Player : MonoBehaviour
         canSwitch = false;
         AddScore(5000);
         endScreen.UpdateUI(dataManager.gameData.score, dataManager.gameData.time);
+        bossMusic.Stop();
+        mainMusic.Play();
     }
 }
