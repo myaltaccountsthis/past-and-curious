@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
             if (!room.visited) {
                 room.Activate();
                 room.visited = true;
-                if (room.index > currentRoom.index)
+                if (currentRoom == null || room.index > currentRoom.index)
                     currentRoom = room;
             }
         }
