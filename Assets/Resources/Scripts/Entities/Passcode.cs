@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,8 +15,12 @@ public class Passcode : Entity
 
     private bool notFirstFrame = false;
     private bool active;
-
+    
     private static Color accGreen = new(0.6f, 0.8f, 0.2f);
+
+    public AudioSource keyPress;
+    public AudioSource passAccepted;
+    public AudioSource passIncorrect;
 
     public void Start()
     {
@@ -89,15 +94,18 @@ public class Passcode : Entity
         {
             if (enteredText.Equals(code))
             {
+                passAccepted.Play();
                 StartCoroutine(SolveSequence());
             }
             else
             {
+                passIncorrect.Play();
                 passcodeUI.text.color = Color.red;
             }
         }
-
+        
         passcodeUI.text.text = enteredText + new String('_', code.Length - enteredText.Length);
+        AudioSource.PlayClipAtPoint(keyPress.clip, keyPress.transform.position);
     }
 
     IEnumerator SolveSequence()

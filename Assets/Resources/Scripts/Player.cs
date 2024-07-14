@@ -55,6 +55,11 @@ public class Player : MonoBehaviour
     // Passcode Room 2
     public Sign[] noteRoom2 = new Sign[5];
     public Passcode passcode2;
+    
+    // Audio Sources
+    public AudioSource itemPickup;
+    public AudioSource itemDrop;
+    public AudioSource laserDeath;
 
     private string[] pangrams =
     {
@@ -285,7 +290,10 @@ public class Player : MonoBehaviour
 
     // Collecting a box/thing into inventory
     public bool CollectEntity(Collectible entity) {
-        if (currentEntity == null) {
+        if (currentEntity == null)
+        {
+            itemPickup.time = 0.1f;
+            itemPickup.Play();
             currentEntity = entity;
             entityUI.DisplayEntity(entity);
             entity.gameObject.SetActive(false);
@@ -301,7 +309,10 @@ public class Player : MonoBehaviour
 
     // Using an entity (could be dropping)
     public bool DropEntity(Collector entity) {
-        if (currentEntity != null && currentEntity == entity.requiredCollectible) {
+        if (currentEntity != null && currentEntity == entity.requiredCollectible)
+        {
+            itemDrop.time = 0.4f;
+            itemDrop.Play();
             currentEntity.OnDrop(entity);
             currentEntity = null;
             entityUI.RemoveEntity();
@@ -321,6 +332,8 @@ public class Player : MonoBehaviour
             Debug.Log("Tried to respawn while switching dimensions. Ignoring.");
             return;
         }
+
+        laserDeath.Play();
         isAlive = false;
         inDeathAnimation = true;
         animator.SetFloat("Horizontal", 0);

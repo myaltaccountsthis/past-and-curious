@@ -21,6 +21,9 @@ public class LaserRoom : MonoBehaviour
 
     private static readonly Color waitingColor = new(1, 0, 0, .25f);
     private static readonly Color activeColor = Color.red;
+    
+    // Audio Sources
+    public AudioSource laser;
 
     void Awake() {
         // LaserData[] fileLaserData = laserFile.text.Trim().Split('\n').Select(line => new LaserData() {Cells = line.Trim().Split(' ').Select(pair => pair.Split(',')).Select(pair => new Tuple<float, int, int, float>(float.Parse(pair[0]), int.Parse(pair[1]), int.Parse(pair[2]), pair.Length < 4 ? -1 : float.Parse(pair[3]))).ToArray()}).ToArray();
@@ -202,7 +205,10 @@ public class LaserRoom : MonoBehaviour
         callback();
     }
 
-    IEnumerator ActivateLaser(SpriteRenderer renderer, Tuple<float, int, int, float> cell, float delay) {
+    IEnumerator ActivateLaser(SpriteRenderer renderer, Tuple<float, int, int, float> cell, float delay)
+    {
+        AudioSource clone = Instantiate(laser, laser.transform.parent);
+        clone.Play();
         renderer.color = waitingColor;
         renderer.transform.SetParent(room.transform);
         renderer.transform.position = transform.position + new Vector3(cell.Item2 + .5f, cell.Item3 + .5f);
