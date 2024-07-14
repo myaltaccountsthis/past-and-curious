@@ -76,9 +76,11 @@ public class Player : MonoBehaviour
 
             // Do entity interaction
             if (Input.GetKeyDown(KeyCode.E) && canInteract) {
+                Debug.Log("Interacting with entity");
                 // Only interact with the first entity, then hide UI
                 foreach (Entity entity in touchingEntities) {
                     entity.Interact(this);
+                    Debug.Log(entity.name);
                     CloseInteractText();
                     break;
                 }
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out Entity entity)) {
-            if (entity.locked)
+            if (entity.Locked)
                 return;
             if (entity.AutoInteract) {
                 entity.Interact(this);
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour
     void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out Entity entity)) {
-            if (entity.locked)
+            if (entity.Locked)
                 return;
             if (entity.AutoInteract)
                 return;

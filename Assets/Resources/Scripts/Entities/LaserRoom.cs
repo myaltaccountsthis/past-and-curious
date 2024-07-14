@@ -49,7 +49,7 @@ public class LaserRoom : MonoBehaviour
         renderer.transform.SetParent(room.transform);
         renderer.transform.position = transform.position + new Vector3(cell.Item2 + .5f, cell.Item3 + .5f);
         yield return new WaitForSeconds(delay);
-        renderer.GetComponent<BoxCollider2D>().enabled = true;
+        renderer.GetComponent<Killbrick>().Locked = false;
         renderer.color = activeColor;
         yield return new WaitForSeconds(delay / 2);
         Destroy(renderer.gameObject);

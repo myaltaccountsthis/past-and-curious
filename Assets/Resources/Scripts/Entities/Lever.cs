@@ -11,8 +11,8 @@ public class Lever : Entity
 
     public override void Interact(Player player)
     {
-        if (locked) return;
-        locked = true;
+        if (Locked) return;
+        Locked = true;
         pastGate.gameObject.SetActive(false);
         presentGate.gameObject.SetActive(false);
         GetComponent<SpriteRenderer>().sprite = otherSprite;

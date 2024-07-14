@@ -5,10 +5,10 @@ using UnityEngine;
 public class PadlockDoor : Collector
 {
     public override void Interact(Player player) {
-        if (locked) return;
+        if (Locked) return;
         bool success = player.DropEntity(this);
         if (success) {
-            locked = true;
+            Locked = true;
             presentCollectible.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }

@@ -10,10 +10,10 @@ public class Collector : Entity
     protected PresentCollectible presentCollectible;
 
     public override void Interact(Player player) {
-        if (locked) return;
+        if (Locked) return;
         bool success = player.DropEntity(this);
         if (success) {
-            locked = true;
+            Locked = true;
             presentCollectible.transform.position = presentCollectible.newPosition;
             player.AddScore(score);
         }

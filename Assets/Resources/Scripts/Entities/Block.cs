@@ -8,6 +8,6 @@ public class Block : Collectible
     {
         transform.position = collector.transform.position;
         gameObject.SetActive(true);
-        locked = true;
+        Locked = true;
     }
 }

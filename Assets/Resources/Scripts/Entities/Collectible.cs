@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Collectible : Entity
 {
     public override void Interact(Player player) {
-        if (locked) return;
+        if (Locked) return;
         player.CollectEntity(this);
     }
 

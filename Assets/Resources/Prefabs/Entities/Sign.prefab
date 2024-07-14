@@ -100,7 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   title: Topics in Sciences and Technology (5/23/2049)
-  text: You can control yourself in both the past and present!!
+  text: Latest research shows that nuclear radiation has the chance give people the
+    ability to control their past and present selves. Use Q to toggle.
 --- !u!61 &6210262352440090729
 BoxCollider2D:
   m_ObjectHideFlags: 0

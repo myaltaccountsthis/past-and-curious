@@ -6,6 +6,6 @@ public class Key : Collectible
 {
     public override void OnDrop(Collector collector)
     {
-        locked = true;
+        Locked = true;
     }
 }

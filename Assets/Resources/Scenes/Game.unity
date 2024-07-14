@@ -4251,6 +4251,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: -1, y: 26, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 0, y: 26, z: 0}
     second:
       serializedVersion: 2
@@ -14163,7 +14173,7 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 720
+  - m_RefCount: 721
     m_Data: {fileID: 11400000, guid: 8eb45b45b5f0b3140bb462f272cb5401, type: 2}
   - m_RefCount: 370
     m_Data: {fileID: 11400000, guid: 98ed4aaf5d2055242ae122b1810645a5, type: 2}
@@ -14188,7 +14198,7 @@ Tilemap:
   - m_RefCount: 9
     m_Data: {fileID: 11400000, guid: ce330c5ca3156d44b9dd833564888d51, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 720
+  - m_RefCount: 721
     m_Data: {fileID: 21300000, guid: 6df53b5a4ca27e64ab43138154ee4dc1, type: 3}
   - m_RefCount: 370
     m_Data: {fileID: 21300000, guid: ce9af29cd9ef807459edb0ae5e81e64d, type: 3}
@@ -14213,7 +14223,7 @@ Tilemap:
   - m_RefCount: 9
     m_Data: {fileID: 21300000, guid: a634f171c6ae75a48bf9b15c9c6ed7dc, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 1370
+  - m_RefCount: 1371
     m_Data:
       e00: 1
       e01: 0
@@ -14232,7 +14242,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 1370
+  - m_RefCount: 1371
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -14574,6 +14584,10 @@ PrefabInstance:
     - target: {fileID: 8662603680154400346, guid: 969496a4cd007934982a2204e3a57d15, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668724908165740674, guid: 969496a4cd007934982a2204e3a57d15, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -26.44812
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34308,15 +34322,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 142434382}
     m_Modifications:
-    - target: {fileID: -6623161034166778643, guid: 5749882196308784183f91040b2d6ed0, type: 3}
-      propertyPath: text
-      value: Latest research shows that nuclear radiation has the chance give people
-        the ability to control their past and present selves. Use Q to toggle.
-      objectReference: {fileID: 0}
-    - target: {fileID: -6623161034166778643, guid: 5749882196308784183f91040b2d6ed0, type: 3}
-      propertyPath: locked
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5
