@@ -15,7 +15,7 @@ public class LightSwitch : Entity
         Locked = true;
         foreach (Killbrick light in lights)
         {
-            light.GetComponent<SpriteRenderer>().color = Color.white;
+            light.GetComponent<SpriteRenderer>().color = new(1, 1, 1, .2f);
         }
         GetComponent<SpriteRenderer>().sprite = otherSprite;
         player.AddScore(score);

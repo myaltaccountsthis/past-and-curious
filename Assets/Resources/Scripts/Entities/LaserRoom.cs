@@ -73,10 +73,10 @@ public class LaserRoom : MonoBehaviour
             {
                 for (int j = 0; j < 2 * i; j++)
                 {
-                    arr.Add(new((6 - i + 5) * 0.3f + 1.5f, 6 - i + j, 6 + i, -1));
-                    arr.Add(new((6 - i + 5) * 0.3f + 1.5f, 6 + i, 6 + i - j, -1));
-                    arr.Add(new((6 - i + 5) * 0.3f + 1.5f, 6 + i - j, 6 - i, -1));
-                    arr.Add(new((6 - i + 5) * 0.3f + 1.5f, 6 - i, 6 - i + j, -1));
+                    arr.Add(new((6 - i + 6) * 0.3f + 1.5f, 6 - i + j, 6 + i, -1));
+                    arr.Add(new((6 - i + 6) * 0.3f + 1.5f, 6 + i, 6 + i - j, -1));
+                    arr.Add(new((6 - i + 6) * 0.3f + 1.5f, 6 + i - j, 6 - i, -1));
+                    arr.Add(new((6 - i + 6) * 0.3f + 1.5f, 6 - i, 6 - i + j, -1));
                 }
             }
             laserData.Add(new LaserData() {Cells = arr.ToArray()});
@@ -154,8 +154,8 @@ public class LaserRoom : MonoBehaviour
                 int index = UnityEngine.Random.Range(j + 1, tiles.Length);
                 (tiles[j], tiles[index]) = (tiles[index], tiles[j]);
             }
-            int count = Mathf.FloorToInt((.3f + i*.12f) * 13 * 13);
-            float delay = 1.2f - .1f * i;
+            int count = Mathf.FloorToInt((.3f + i*.1f) * 13 * 13);
+            float delay = 1.2f;
             for (int j = 0; j < count; j++)
                 arr.Add(new(t, tiles[j] % 13, tiles[j] / 13, delay));
             t += delay + 1;
@@ -169,8 +169,7 @@ public class LaserRoom : MonoBehaviour
         if (Done) {
             // Activate finished sequence
             GameFinished = true;
-            Debug.Log("Game Finished");
-            // TODO game finished screen
+            callback();
             return;
         }
         if (Activated)

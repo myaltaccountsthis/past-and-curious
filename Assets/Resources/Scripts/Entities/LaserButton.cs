@@ -18,8 +18,8 @@ public class LaserButton : Entity
         Locked = true;
         laserController.OnInteract(() => {
             if (laserController.GameFinished)
-                return;
-            if (laserController.Done) {
+                player.OnWin();
+            else if (laserController.Done) {
                 spriteRenderer.sprite = greenSprite;
                 Locked = false;
             }
