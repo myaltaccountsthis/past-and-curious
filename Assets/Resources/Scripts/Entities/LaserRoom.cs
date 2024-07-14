@@ -30,7 +30,6 @@ public class LaserRoom : MonoBehaviour
     IEnumerator ActivateLasers() {
         for (int i = 0; i < laserData.Length; i++) {
             yield return new WaitForSeconds(3);
-            Debug.Log($"Starting {i}");
             int t = 0;
             float delay = LeanTween.easeOutQuad(2, .5f, (i + 1f) / laserData.Length);
             foreach (Tuple<float, int, int> cell in laserData[i].Cells) {
@@ -50,6 +49,7 @@ public class LaserRoom : MonoBehaviour
         renderer.transform.SetParent(room.transform);
         renderer.transform.position = transform.position + new Vector3(cell.Item2 + .5f, cell.Item3 + .5f);
         yield return new WaitForSeconds(delay);
+        renderer.GetComponent<BoxCollider2D>().enabled = true;
         renderer.color = activeColor;
         yield return new WaitForSeconds(delay / 2);
         Destroy(renderer.gameObject);

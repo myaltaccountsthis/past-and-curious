@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class Player : MonoBehaviour
     public DataManager dataManager;
     public GameObject past, present;
     public TextMeshProUGUI interactText;
+    public Image cover;
     public float walkSpeed;
     public bool currentlyInPast;
     public EntityUI entityUI;
@@ -18,6 +21,7 @@ public class Player : MonoBehaviour
 
     // Other components
     private Camera mainCamera;
+    private PixelPerfectCamera pixelPerfectCamera;
     private new Rigidbody2D rigidbody;
     private Animator animator;
 
@@ -30,11 +34,15 @@ public class Player : MonoBehaviour
     private Room currentRoom;
     private Room otherRoom;
 
+    private static readonly Color pastColor = Color.green;
+    private static readonly Color presentColor = Color.cyan;
+
     // Touching Entities
     private HashSet<Entity> touchingEntities;
 
     void Awake() {
         mainCamera = Camera.main;
+        pixelPerfectCamera = mainCamera.GetComponent<PixelPerfectCamera>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -51,28 +59,32 @@ public class Player : MonoBehaviour
     void Update() {
         // Check for player inputs
         if (Input.GetKeyDown(KeyCode.Q) && canSwitch) {
-            SwitchDimensions();
+            StartCoroutine(SwitchDimensions());
+            animator.SetFloat("Horizontal", 0);
+            animator.SetFloat("Vertical", 0);
         }
+        // STOP PLAYER INTERACTION IF SWITCHING DIMENSIONS
+        if (canSwitch) {
+            // Do player movement
+            Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            animator.SetFloat("Horizontal", input.x);
+            animator.SetFloat("Vertical", input.y);
+            if (input.magnitude > 1)
+                input.Normalize();
+            Vector2 newPos = transform.position + Time.deltaTime * walkSpeed * (Vector3)input;
+            rigidbody.MovePosition(newPos);
 
-        // Do player movement
-        Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        animator.SetFloat("Horizontal", input.x);
-        animator.SetFloat("Vertical", input.y);
-        if (input.magnitude > 1)
-            input.Normalize();
-        Vector2 newPos = transform.position + Time.deltaTime * walkSpeed * (Vector3)input;
-        rigidbody.MovePosition(newPos);
-        mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
-
-        // Do entity interaction
-        if (Input.GetKeyDown(KeyCode.E) && canInteract) {
-            // Only interact with the first entity, then hide UI
-            foreach (Entity entity in touchingEntities) {
-                entity.Interact(this);
-                CloseInteractText();
-                break;
+            // Do entity interaction
+            if (Input.GetKeyDown(KeyCode.E) && canInteract) {
+                // Only interact with the first entity, then hide UI
+                foreach (Entity entity in touchingEntities) {
+                    entity.Interact(this);
+                    CloseInteractText();
+                    break;
+                }
             }
         }
+        mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -111,16 +123,52 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void SwitchDimensions() {
+    private IEnumerator SwitchDimensions() {
+        // canSwitch should be true initially
         canSwitch = false;
         touchingEntities.Clear();
         CloseInteractText();
-        // Change room idk, it might yield
-        // switch positions
+
+        // Do funny effects
+        float t = 0, duration = .7f;
+        float cameraOldSize = mainCamera.orthographicSize, cameraLargeSize = cameraOldSize * 1.5f, cameraSmallSize = .1f, cameraZoomOutSize = cameraOldSize * 10;
+        pixelPerfectCamera.enabled = false;
+        // Zoom out a bit
+        while (t < duration) {
+            t += Time.deltaTime;
+            mainCamera.orthographicSize = LeanTween.easeOutCirc(cameraOldSize, cameraLargeSize, t / duration);
+            yield return null;
+        }
+        // Zoom in a bit
+        t = 0;
+        duration = .5f;
+        while (t < duration) {
+            t += Time.deltaTime;
+            mainCamera.orthographicSize = LeanTween.easeInCirc(cameraLargeSize, cameraSmallSize, t / duration);
+            yield return null;
+        }
+        // Zoom out a lot + make coveer opaque
+        t = 0;
+        duration = 1.5f;
+        Color startColor = currentlyInPast ? pastColor : presentColor, endColor = currentlyInPast ? presentColor : pastColor;
+        cover.color = new Color(startColor.r, startColor.g, startColor.b, 0);
+        cover.gameObject.SetActive(true);
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = new Color(startColor.r, startColor.g, startColor.b, LeanTween.easeOutSine(0, 1, t / duration));
+            mainCamera.orthographicSize = LeanTween.easeOutSine(cameraSmallSize, cameraZoomOutSize, t / duration);
+            yield return null;
+        }
+        t = 0;
+
+        // switch positions and data
         currentlyInPast = !currentlyInPast;
         (transform.position, otherPosition) = (otherPosition, transform.position);
         (currentEntity, otherEntity) = (otherEntity, currentEntity);
         (currentRoom, otherRoom) = (otherRoom, currentRoom);
+        // Reload the room if it was previously loaded
+        if (currentRoom != null && currentRoom.visited)
+            currentRoom.Activate(); 
         if (currentEntity != null) {
             entityUI.DisplayEntity(currentEntity);
         }
@@ -135,6 +183,26 @@ public class Player : MonoBehaviour
             past.SetActive(false);
             present.SetActive(true);
         }
+
+        // Change cover color
+        duration = 1.5f;
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = Color.Lerp(startColor, endColor, t / duration);
+            yield return null;
+        }
+        // Zoom back in + make cover transparent
+        t = 0;
+        duration = 1.5f;
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = new Color(endColor.r, endColor.g, endColor.b, LeanTween.easeOutQuad(1, 0, Mathf.Min(1, t / duration * 2)));
+            mainCamera.orthographicSize = LeanTween.easeOutBack(cameraZoomOutSize, cameraOldSize, t / duration, .5f);
+            yield return null;
+        }
+        cover.gameObject.SetActive(false);
+        mainCamera.orthographicSize = cameraOldSize;
+        pixelPerfectCamera.enabled = true;
 
         canSwitch = true;
     }
@@ -183,5 +251,12 @@ public class Player : MonoBehaviour
     public void Respawn() {
         currentRoom.Activate();
         transform.position = currentRoom.spawnLocation.position;
+    }
+
+    /// <summary>
+    /// Adds score to the player's score, where more time spent means less score
+    /// </summary>
+    public void AddScore(int score) {
+        dataManager.gameData.score += Mathf.Max(score - Mathf.FloorToInt(dataManager.gameData.time / 6), score / 2);
     }
 }

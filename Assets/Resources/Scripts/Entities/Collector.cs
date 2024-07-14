@@ -5,6 +5,7 @@ using UnityEngine;
 public class Collector : Entity
 {
     public Collectible requiredCollectible;
+    public int score;
     [SerializeField]
     protected PresentCollectible presentCollectible;
 
@@ -14,6 +15,7 @@ public class Collector : Entity
         if (success) {
             locked = true;
             presentCollectible.transform.position = presentCollectible.newPosition;
+            player.AddScore(score);
         }
     }
 }
