@@ -99,6 +99,7 @@ public class Passcode : Entity
         yield return new WaitForSeconds(1);
         passcodeUI.SetActive(false);
         onSolve.Invoke();
+        Locked = true;
     }
     
 }
