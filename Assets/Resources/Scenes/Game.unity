@@ -16309,7 +16309,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: text
-      value: Lore
+      value: It all went by so fast. I was just doing normal procedures then all
+        of a sudden...
       objectReference: {fileID: 0}
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: title
@@ -17398,7 +17399,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: text
-      value: Lore
+      value: 'Inspection Results: Radiation levels too high for investigation.'
       objectReference: {fileID: 0}
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: title
@@ -20617,7 +20618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &1386856548
 Grid:
   m_ObjectHideFlags: 0
@@ -20900,7 +20901,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: text
-      value: Lore
+      value: I hope I survive this. Please tell my family about what happened...
       objectReference: {fileID: 0}
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: title
@@ -22960,7 +22961,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: text
-      value: Lore
+      value: This place has been abandoned for years. It looks fairly safe, somewhat
+        creepy.
       objectReference: {fileID: 0}
     - target: {fileID: -6623161034166778643, guid: e0906bb42b7990b429940272f6d4e642, type: 3}
       propertyPath: title
@@ -23423,7 +23425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &2040622423
 Grid:
   m_ObjectHideFlags: 0
