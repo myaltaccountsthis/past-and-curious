@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
                 // Only interact with the first entity, then hide UI
                 foreach (Entity entity in touchingEntities) {
                     entity.Interact(this);
-                    Debug.Log(entity.name);
                     CloseInteractText();
                     break;
                 }

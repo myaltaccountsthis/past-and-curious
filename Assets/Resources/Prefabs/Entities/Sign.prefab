@@ -99,9 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 0
-  title: Topics in Sciences and Technology (5/23/2049)
-  text: Latest research shows that nuclear radiation has the chance give people the
-    ability to control their past and present selves. Use Q to toggle.
+  title: 
+  text: 
 --- !u!61 &6210262352440090729
 BoxCollider2D:
   m_ObjectHideFlags: 0
