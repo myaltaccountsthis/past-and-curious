@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -39,12 +40,20 @@ public class Player : MonoBehaviour
 
     // Touching Entities
     private HashSet<Entity> touchingEntities;
+    
+    // Passcode Room 1
+    public Sign[] noteRoom1 = new Sign[4];
+    public Passcode passcode1;
 
     void Awake() {
         mainCamera = Camera.main;
         pixelPerfectCamera = mainCamera.GetComponent<PixelPerfectCamera>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        
+        // Set up Passcode room 1
+        passcode1.code = Random.Range(0, 1000000).ToString("D6");
+        noteRoom1[Random.Range(0, 4)].text = passcode1.code;
     }
 
     void Start() {
@@ -133,7 +142,7 @@ public class Player : MonoBehaviour
 
         // Do funny effects
         float t = 0, duration = .7f;
-        float cameraOldSize = mainCamera.orthographicSize, cameraLargeSize = cameraOldSize * 1.5f, cameraSmallSize = .1f, cameraZoomOutSize = cameraOldSize * 10;
+        float cameraOldSize = mainCamera.orthographicSize, cameraLargeSize = cameraOldSize * 1.5f, cameraSmallSize = .1f, cameraZoomOutSize = cameraOldSize * 5;
         pixelPerfectCamera.enabled = false;
         // Zoom out a bit
         while (t < duration) {
