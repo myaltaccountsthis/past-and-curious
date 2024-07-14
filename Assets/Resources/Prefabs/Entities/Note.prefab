@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6623161034166778643}
   - component: {fileID: 6210262352440090729}
   m_Layer: 0
-  m_Name: Sign
+  m_Name: Note
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 0
-  title: Topics in Sciences and Technology (5/23/2049)
-  text: You can control yourself in both the past and present!!
+  title: 
+  text: 
 --- !u!61 &6210262352440090729
 BoxCollider2D:
   m_ObjectHideFlags: 0
