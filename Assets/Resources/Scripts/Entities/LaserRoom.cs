@@ -85,7 +85,7 @@ public class LaserRoom : MonoBehaviour
         {
             // alternating checker board
             float t = 0;
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 float delay = 1 - i * 0.1f;
                 for (int j = i % 2; j < 13 * 13; j += 2)
@@ -98,7 +98,7 @@ public class LaserRoom : MonoBehaviour
             arr.Clear();
         }
         {
-            // squeeze to side
+            // sweep to side
             List<List<Tuple<float, int, int, float>>> directions = new() { new(), new(), new(), new() };
             for (int i = 0; i < 11; i++)
             {
@@ -125,7 +125,7 @@ public class LaserRoom : MonoBehaviour
                     Tuple<float, int, int, float> dirArr = directions[toShuffle[i]][j];
                     arr.Add(new(t, dirArr.Item2, dirArr.Item3, delay));
                 }
-                t += delay + 2.5f;
+                t += delay + 3f;
             }
             laserData.Add(new LaserData() {Cells = arr.ToArray()});
             arr.Clear();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LaserButton : Entity
 {
+    public Sprite pressedSprite;
     public Sprite greenSprite;
 
     private SpriteRenderer spriteRenderer;
@@ -16,6 +17,8 @@ public class LaserButton : Entity
     {
         LaserRoom laserController = transform.parent.GetComponentInChildren<LaserRoom>();
         Locked = true;
+        if (!laserController.Done)
+            spriteRenderer.sprite = pressedSprite;
         laserController.OnInteract(() => {
             if (laserController.GameFinished)
                 player.OnWin();

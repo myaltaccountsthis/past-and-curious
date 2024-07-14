@@ -31,7 +31,7 @@ public class Passcode : Entity
         
         if (notFirstFrame && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)))
         {
-            passcodeUI.SetActive(false);
+            passcodeUI.gameObject.SetActive(false);
             active = false;
         }
         notFirstFrame = true;
@@ -48,7 +48,9 @@ public class Passcode : Entity
     public void OnDisable()
     {
         active = false;
-        passcodeUI.SetActive(false);
+        if (passcodeUI == null)
+            return;
+        passcodeUI.gameObject.SetActive(false);
     }
 
     public override void Interact(Player player)
@@ -56,7 +58,7 @@ public class Passcode : Entity
         active = true;
         notFirstFrame = false;
         passcodeUI.exit.onClick.RemoveAllListeners();
-        passcodeUI.exit.onClick.AddListener(() => passcodeUI.SetActive(false));
+        passcodeUI.exit.onClick.AddListener(() => passcodeUI.gameObject.SetActive(false));
         for (var num = 0; num < 10; num++)
         {
             var i = num;
@@ -64,7 +66,7 @@ public class Passcode : Entity
             passcodeUI.keys[i].onClick.AddListener(() => InputDigit(i));
         }
         ResetText();
-        passcodeUI.SetActive(true);
+        passcodeUI.gameObject.SetActive(true);
     }
 
     private void ResetText()
@@ -102,7 +104,7 @@ public class Passcode : Entity
     {
         passcodeUI.text.color = accGreen;
         yield return new WaitForSeconds(1);
-        passcodeUI.SetActive(false);
+        passcodeUI.gameObject.SetActive(false);
         onSolve.Invoke();
         Locked = true;
     }

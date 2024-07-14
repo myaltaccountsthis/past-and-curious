@@ -123,7 +123,7 @@ MonoBehaviour:
     m_PointSize: 8
     m_Scale: 1
     m_UnitsPerEM: 1024
-    m_LineHeight: 8
+    m_LineHeight: 10
     m_AscentLine: 8
     m_CapLine: 7
     m_MeanLine: 5

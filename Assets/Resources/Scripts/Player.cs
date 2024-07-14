@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
     public Sign[] noteRoom2 = new Sign[5];
     public Passcode passcode2;
 
-    private String[] pangrams =
+    private string[] pangrams =
     {
         "sphinx of black quartz, ? judge my vow…", "waltz, bad nymph, for ? quick jigs vex…",
         "these ? jackdaws love my big sphinx of quartz", "pack my box with ? dozen of my favorite liquor jugs"
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
             } while (dict.ContainsKey(letter));
             
             int digit = Random.Range(2, 10);
-            noteRoom2[0].text += letter;
+            noteRoom2[0].text += char.ToUpper(letter);
             passcode2.code += digit;
             dict.Add(letter, digit);
         }
