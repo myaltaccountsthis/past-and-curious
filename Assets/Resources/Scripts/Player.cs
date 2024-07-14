@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -49,6 +51,16 @@ public class Player : MonoBehaviour
     // Passcode Room 1
     public Sign[] noteRoom1 = new Sign[4];
     public Passcode passcode1;
+    
+    // Passcode Room 2
+    public Sign[] noteRoom2 = new Sign[5];
+    public Passcode passcode2;
+
+    private String[] pangrams =
+    {
+        "sphinx of black quartz, ? judge my vow…", "waltz, bad nymph, for ? quick jigs vex…",
+        "these ? jackdaws love my big sphinx of quartz", "pack my box with ? dozen of my favorite liquor jugs"
+    };
 
     void Awake() {
         mainCamera = Camera.main;
@@ -57,9 +69,39 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         
-        // Set up Passcode room 1
+        // Set up Passcode Room 1
         passcode1.code = Random.Range(0, 1000000).ToString("D6");
         noteRoom1[Random.Range(0, 4)].text = passcode1.code;
+        
+        // Set up Passcode Room 2
+        Dictionary<char, int> dict = new Dictionary<char, int>();
+        passcode2.code = "";
+        noteRoom2[0].text = "";
+        
+        for (int i = 0; i < 4; i++)
+        {
+            char letter;
+            do
+            {
+                letter = (char) Random.Range('a', 'z' + 1);
+            } while (dict.ContainsKey(letter));
+            
+            int digit = Random.Range(1, 10);
+            noteRoom2[0].text += letter;
+            passcode2.code += digit;
+            dict.Add(letter, digit);
+        }
+
+        pangrams = pangrams.OrderBy(_ => Guid.NewGuid()).ToArray();
+        KeyValuePair<char, int>[] pairs = dict.OrderBy(_ => Guid.NewGuid()).ToArray();
+        for (int i = 0; i < 4; i++)
+        {
+            char c = pairs[i].Key;
+            int val = pairs[i].Value;
+            string p = pangrams[i];
+            int j = p.IndexOf(c);
+            noteRoom2[i + 1].text = (p.Substring(0, j) + Char.ToUpper(c) + p.Substring(j + 1)).Replace("?", "" + val);
+        }
     }
 
     void Start() {

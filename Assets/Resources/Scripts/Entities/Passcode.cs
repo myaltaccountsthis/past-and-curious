@@ -7,30 +7,24 @@ using UnityEngine.Events;
 public class Passcode : Entity
 {
     public string code;
-    private string enteredText;
+    private string enteredText = "";
     private string defaultText;
     public PasscodeUI passcodeUI;
     public UnityEvent onSolve;
 
     private bool notFirstFrame = false;
+    private bool active;
 
     private static Color accGreen = new(0.6f, 0.8f, 0.2f);
 
     public void Start()
     {
-        passcodeUI.exit.onClick.AddListener(() => passcodeUI.SetActive(false));
-        for (var num = 0; num < 10; num++)
-        {
-            var i = num;
-            passcodeUI.keys[i].onClick.AddListener(() => InputDigit(i));
-        }
-
         defaultText = new string('_', code.Length);
     }
     
     public void Update()
     {
-        if (!passcodeUI.gameObject.activeSelf)
+        if (!active)
         {
             return;
         }
@@ -38,6 +32,7 @@ public class Passcode : Entity
         if (notFirstFrame && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E)))
         {
             passcodeUI.SetActive(false);
+            active = false;
         }
         notFirstFrame = true;
         
@@ -52,12 +47,22 @@ public class Passcode : Entity
 
     public void OnDisable()
     {
+        active = false;
         passcodeUI.SetActive(false);
     }
 
     public override void Interact(Player player)
     {
+        active = true;
         notFirstFrame = false;
+        passcodeUI.exit.onClick.RemoveAllListeners();
+        passcodeUI.exit.onClick.AddListener(() => passcodeUI.SetActive(false));
+        for (var num = 0; num < 10; num++)
+        {
+            var i = num;
+            passcodeUI.keys[i].onClick.RemoveAllListeners();
+            passcodeUI.keys[i].onClick.AddListener(() => InputDigit(i));
+        }
         ResetText();
         passcodeUI.SetActive(true);
     }
@@ -66,7 +71,6 @@ public class Passcode : Entity
     {
         passcodeUI.text.color = Color.black;
         passcodeUI.text.text = defaultText;
-        enteredText = "";
     }
 
     public void InputDigit(int d)
