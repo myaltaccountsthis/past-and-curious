@@ -20,16 +20,20 @@ public class Player : MonoBehaviour
     public InfoUI infoUI;
     public Room startingRoom, startingRoomPast;
     public EndScreen endScreen;
+    public Sprite deadSprite;
 
     // Other components
     private Camera mainCamera;
     private PixelPerfectCamera pixelPerfectCamera;
     private new Rigidbody2D rigidbody;
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     // Player stats
     private bool canSwitch;
     private bool canInteract;
+    private bool isAlive;
+    private bool inDeathAnimation;
     private Vector2 otherPosition;
     private Collectible currentEntity;
     private Collectible otherEntity;
@@ -51,6 +55,7 @@ public class Player : MonoBehaviour
         pixelPerfectCamera = mainCamera.GetComponent<PixelPerfectCamera>();
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         
         // Set up Passcode room 1
         passcode1.code = Random.Range(0, 1000000).ToString("D6");
@@ -60,21 +65,25 @@ public class Player : MonoBehaviour
     void Start() {
         currentlyInPast = false;
         canSwitch = true;
-        otherPosition = new();
+        isAlive = true;
+        inDeathAnimation = false;
         touchingEntities = new();
         currentRoom = startingRoom;
         otherRoom = startingRoomPast;
+        transform.position = currentRoom.spawnLocation.position;
+        otherPosition = otherRoom.spawnLocation.position;
     }
 
     void Update() {
         // Check for player inputs
-        if (Input.GetKeyDown(KeyCode.Q) && canSwitch) {
+        if (Input.GetKeyDown(KeyCode.Q) && canSwitch && !inDeathAnimation) {
             StartCoroutine(SwitchDimensions());
             animator.SetFloat("Horizontal", 0);
             animator.SetFloat("Vertical", 0);
         }
-        // STOP PLAYER INTERACTION IF SWITCHING DIMENSIONS
-        if (canSwitch) {
+
+        // STOP PLAYER INTERACTION IF SWITCHING DIMENSIONS OR DEAD
+        if (canSwitch && !inDeathAnimation) {
             // Do player movement
             Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             animator.SetFloat("Horizontal", input.x);
@@ -86,7 +95,6 @@ public class Player : MonoBehaviour
 
             // Do entity interaction
             if (Input.GetKeyDown(KeyCode.E) && canInteract) {
-                Debug.Log("Interacting with entity");
                 // Only interact with the first entity, then hide UI
                 foreach (Entity entity in touchingEntities) {
                     entity.Interact(this);
@@ -95,6 +103,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
         mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
     }
 
@@ -260,15 +269,73 @@ public class Player : MonoBehaviour
     }
 
     public void Respawn() {
+        if (!isAlive)
+            return;
+        if (inDeathAnimation) {
+            Debug.Log("Tried to respawn while in death animation. Ignoring.");
+            return;
+        }
+        if (!canSwitch) {
+            Debug.Log("Tried to respawn while switching dimensions. Ignoring.");
+            return;
+        }
+        isAlive = false;
+        inDeathAnimation = true;
+        animator.SetFloat("Horizontal", 0);
+        animator.SetFloat("Vertical", 0);
+        dataManager.gameData.score -= 100;
+        StartCoroutine(RespawnCoroutine());
+    }
+
+    private IEnumerator RespawnCoroutine() {
+        // Disable animations and set sprite to dead
+        animator.enabled = false;
+        spriteRenderer.sprite = deadSprite;
+        // Funny effects
+        float t = 0, duration = 1f;
+        Color startColor = new(1, 0, 0, 0), middleColor = Color.red, endColor = Color.black;
+        cover.color = startColor;
+        cover.gameObject.SetActive(true);
+        // Tween to red
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = Color.Lerp(startColor, middleColor, t / duration);
+            yield return null;
+        }
+        // Tween to black
+        t = 0;
+        duration = 1.5f;
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = Color.Lerp(middleColor, endColor, LeanTween.easeInOutSine(0, 1, t / duration));
+            yield return null;
+        }
+        cover.color = endColor;
+        // Do respawn functionality
         currentRoom.Activate();
         transform.position = currentRoom.spawnLocation.position;
+        animator.enabled = true;
+        isAlive = true;
+        // Wait and tween to transparent
+        yield return new WaitForSeconds(1);
+        Color transparent = new(0, 0, 0, 0);
+        t = 0;
+        duration = 1f;
+        while (t < duration) {
+            t += Time.deltaTime;
+            cover.color = Color.Lerp(endColor, transparent, t / duration);
+            yield return null;
+        }
+        // Done with sequence
+        cover.gameObject.SetActive(false);
+        inDeathAnimation = false;
     }
 
     /// <summary>
     /// Adds score to the player's score, where more time spent means less score
     /// </summary>
     public void AddScore(int score) {
-        dataManager.gameData.score += Mathf.Max(score - Mathf.FloorToInt(dataManager.gameData.time / 6), score / 2);
+        dataManager.gameData.score += Mathf.Max(score - Mathf.FloorToInt(dataManager.gameData.time / 2), score / 2);
     }
 
     public void OnWin() {

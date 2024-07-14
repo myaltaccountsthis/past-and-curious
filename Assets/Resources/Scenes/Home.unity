@@ -181,8 +181,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Start
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f729a685d95b72749abacc6599b0e1c2, type: 2}
-  m_sharedMaterial: {fileID: 848791230088583888, guid: f729a685d95b72749abacc6599b0e1c2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
+  m_sharedMaterial: {fileID: -6196893522904047226, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5718,7 +5718,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32
@@ -6151,8 +6151,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The Past and The Curious
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f729a685d95b72749abacc6599b0e1c2, type: 2}
-  m_sharedMaterial: {fileID: 848791230088583888, guid: f729a685d95b72749abacc6599b0e1c2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
+  m_sharedMaterial: {fileID: -6196893522904047226, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
