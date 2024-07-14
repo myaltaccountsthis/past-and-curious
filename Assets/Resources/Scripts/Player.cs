@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public EntityUI entityUI;
     public InfoUI infoUI;
     public Room startingRoom, startingRoomPast;
+    public EndScreen endScreen;
 
     // Other components
     private Camera mainCamera;
@@ -268,5 +269,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public void AddScore(int score) {
         dataManager.gameData.score += Mathf.Max(score - Mathf.FloorToInt(dataManager.gameData.time / 6), score / 2);
+    }
+
+    public void OnWin() {
+        canSwitch = false;
+        AddScore(5000);
+        endScreen.UpdateUI(dataManager.gameData.score, dataManager.gameData.time);
     }
 }
