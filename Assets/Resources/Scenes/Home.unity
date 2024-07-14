@@ -5582,7 +5582,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32
@@ -5794,8 +5794,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The Past and The Present
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8af0c541cd44e1643a2aa3ff9c1060d0, type: 2}
-  m_sharedMaterial: {fileID: -1355564049052331936, guid: 8af0c541cd44e1643a2aa3ff9c1060d0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
+  m_sharedMaterial: {fileID: -6196893522904047226, guid: 5913cd0373693af4a829cae59e44a09d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
