@@ -34546,7 +34546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &1386856548
 Grid:
   m_ObjectHideFlags: 0
@@ -35946,7 +35946,7 @@ MonoBehaviour:
   entityUI: {fileID: 654965714}
   infoUI: {fileID: 179316921}
   startingRoom: {fileID: 112342849}
-  startingRoomPast: {fileID: 483967846}
+  startingRoomPast: {fileID: 1739853625}
   endScreen: {fileID: 1498946591}
   deadSprite: {fileID: 0}
   noteRoom1:
@@ -43360,7 +43360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &2040622423
 Grid:
   m_ObjectHideFlags: 0

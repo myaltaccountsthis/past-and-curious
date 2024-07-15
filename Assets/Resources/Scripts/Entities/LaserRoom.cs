@@ -194,7 +194,6 @@ public class LaserRoom : MonoBehaviour
             float lastDelay = defaultDelay;
             foreach (Tuple<float, int, int, float> cell in laserData[i].Cells)
             {
-                bool playSound = !(t >= cell.Item1);
                 while (cell.Item1 > t)
                 {
                     yield return null;
@@ -202,11 +201,6 @@ public class LaserRoom : MonoBehaviour
                 }
                 
                 lastDelay = cell.Item4 == -1 ? defaultDelay : cell.Item4;
-                if (playSound)
-                {
-                    Debug.Log(lastDelay);
-                    PlayLaserAudioAsync(lastDelay);
-                }
                 StartCoroutine(ActivateLaser(Instantiate(laserPrefab, room.transform), cell, lastDelay));
             }
 
@@ -229,13 +223,7 @@ public class LaserRoom : MonoBehaviour
         renderer.color = activeColor;
         // Destroy the laser .5 seconds after activating
         yield return new WaitForSeconds(.6f);
+        AudioSource.PlayClipAtPoint(laser.clip, laser.transform.position);
         Destroy(renderer.gameObject);
     }
-
-    IEnumerator PlayLaserAudioAsync(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        AudioSource.PlayClipAtPoint(laser.clip, laser.transform.position);
-    }
-    
 }
