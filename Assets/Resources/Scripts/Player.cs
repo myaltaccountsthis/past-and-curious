@@ -134,15 +134,6 @@ public class Player : MonoBehaviour
 
         // STOP PLAYER INTERACTION IF SWITCHING DIMENSIONS OR DEAD
         if (canSwitch && !inDeathAnimation) {
-            // Do player movement
-            Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            animator.SetFloat("Horizontal", input.x);
-            animator.SetFloat("Vertical", input.y);
-            if (input.magnitude > 1)
-                input.Normalize();
-            Vector2 newPos = transform.position + Time.deltaTime * walkSpeed * (Vector3)input;
-            rigidbody.MovePosition(newPos);
-
             // Do entity interaction
             if (Input.GetKeyDown(KeyCode.E) && canInteract) {
                 // Only interact with the first entity, then hide UI
@@ -155,6 +146,19 @@ public class Player : MonoBehaviour
         }
 
         mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
+    }
+
+    void FixedUpdate() {
+        if (canSwitch && !inDeathAnimation) {
+            // Do player movement
+            Vector2 input = new(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            animator.SetFloat("Horizontal", input.x);
+            animator.SetFloat("Vertical", input.y);
+            if (input.magnitude > 1)
+                input.Normalize();
+            Vector2 newPos = transform.position + Time.fixedDeltaTime * walkSpeed * (Vector3)input;
+            rigidbody.MovePosition(newPos);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider)

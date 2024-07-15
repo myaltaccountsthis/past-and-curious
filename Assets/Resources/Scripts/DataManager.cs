@@ -12,8 +12,7 @@ public class DataManager : MonoBehaviour
     public Data gameData;
 
     void Awake() {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
+        
     }
 
     void LateUpdate() {
