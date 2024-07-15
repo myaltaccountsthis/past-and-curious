@@ -122,6 +122,81 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &74981
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 142434382}
+    m_Modifications:
+    - target: {fileID: -6623161034166778643, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: text
+      value: MOST OF CHIPPAVILLE DESTROYED IN NUCLEAR REACTOR MELTDOWN...  [Rest
+        of newspaper ripped]
+      objectReference: {fileID: 0}
+    - target: {fileID: -6623161034166778643, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: title
+      value: 'Chippaville News: 7/14/2124'
+      objectReference: {fileID: 0}
+    - target: {fileID: -6623161034166778643, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: locked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8477974269728118781, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+      propertyPath: m_Name
+      value: Sign (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+--- !u!4 &74982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8440952403755899209, guid: 5749882196308784183f91040b2d6ed0, type: 3}
+  m_PrefabInstance: {fileID: 74981}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5024547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1681,6 +1756,7 @@ Transform:
   - {fileID: 1900073390}
   - {fileID: 376092925}
   - {fileID: 55460558}
+  - {fileID: 74982}
   - {fileID: 68520723}
   - {fileID: 417024446}
   - {fileID: 1832367486}

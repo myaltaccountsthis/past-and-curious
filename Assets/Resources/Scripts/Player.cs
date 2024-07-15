@@ -297,7 +297,7 @@ public class Player : MonoBehaviour
     public bool CollectEntity(Collectible entity) {
         if (currentEntity == null)
         {
-            itemPickup.time = 0.1f;
+            itemPickup.time = 0.2f;
             itemPickup.Play();
             currentEntity = entity;
             entityUI.DisplayEntity(entity);
