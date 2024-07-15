@@ -182,8 +182,8 @@ public class LaserRoom : MonoBehaviour
         Activated = true;
         Instantiate(wallPrefab, room.transform);
         StartCoroutine(ActivateLaserSequence(callback));
-        mainMusic.Stop();
-        bossMusic.Play();
+        bossMusic.gameObject.SetActive(true);
+        mainMusic.gameObject.SetActive(false);
     }
 
     IEnumerator ActivateLaserSequence(Action callback) {
@@ -192,14 +192,24 @@ public class LaserRoom : MonoBehaviour
             float t = 0;
             float defaultDelay = 1.5f - i * .3f;
             float lastDelay = defaultDelay;
-            foreach (Tuple<float, int, int, float> cell in laserData[i].Cells) {
-                while (cell.Item1 > t) {
+            foreach (Tuple<float, int, int, float> cell in laserData[i].Cells)
+            {
+                bool playSound = !(t >= cell.Item1);
+                while (cell.Item1 > t)
+                {
                     yield return null;
                     t += Time.deltaTime;
                 }
+                
                 lastDelay = cell.Item4 == -1 ? defaultDelay : cell.Item4;
+                if (playSound)
+                {
+                    Debug.Log(lastDelay);
+                    PlayLaserAudioAsync(lastDelay);
+                }
                 StartCoroutine(ActivateLaser(Instantiate(laserPrefab, room.transform), cell, lastDelay));
             }
+
             yield return new WaitForSeconds(2 + lastDelay);
         }
         Done = true;
@@ -215,11 +225,17 @@ public class LaserRoom : MonoBehaviour
         renderer.transform.SetParent(room.transform);
         renderer.transform.position = transform.position + new Vector3(cell.Item2 + .5f, cell.Item3 + .5f);
         yield return new WaitForSeconds(delay);
-        AudioSource.PlayClipAtPoint(laser.clip, laser.transform.position);
         renderer.GetComponent<Killbrick>().Locked = false;
         renderer.color = activeColor;
         // Destroy the laser .5 seconds after activating
         yield return new WaitForSeconds(.6f);
         Destroy(renderer.gameObject);
     }
+
+    IEnumerator PlayLaserAudioAsync(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        AudioSource.PlayClipAtPoint(laser.clip, laser.transform.position);
+    }
+    
 }

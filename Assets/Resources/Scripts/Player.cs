@@ -402,7 +402,7 @@ public class Player : MonoBehaviour
         canSwitch = false;
         AddScore(5000);
         endScreen.UpdateUI(dataManager.gameData.score, dataManager.gameData.time);
-        bossMusic.Stop();
-        mainMusic.Play();
+        bossMusic.gameObject.SetActive(false);
+        mainMusic.gameObject.SetActive(true);
     }
 }

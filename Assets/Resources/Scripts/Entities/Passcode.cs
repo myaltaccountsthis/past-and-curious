@@ -22,6 +22,9 @@ public class Passcode : Entity
     public AudioSource passAccepted;
     public AudioSource passIncorrect;
 
+    private Player lastPlayer;
+    public int score;
+
     public void Start()
     {
         defaultText = new string('_', code.Length);
@@ -72,6 +75,7 @@ public class Passcode : Entity
         }
         ResetText();
         passcodeUI.gameObject.SetActive(true);
+        lastPlayer = player;
     }
 
     private void ResetText()
@@ -111,6 +115,7 @@ public class Passcode : Entity
     IEnumerator SolveSequence()
     {
         passcodeUI.text.color = accGreen;
+        lastPlayer.AddScore(score);
         yield return new WaitForSeconds(1);
         passcodeUI.gameObject.SetActive(false);
         onSolve.Invoke();
