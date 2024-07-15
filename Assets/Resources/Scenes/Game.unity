@@ -19784,6 +19784,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 577426324227038327, guid: a74555785d971a64d8b093da0491233c, type: 3}
+      propertyPath: score
+      value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 577426324227038327, guid: a74555785d971a64d8b093da0491233c, type: 3}
       propertyPath: keyPress
       value: 
       objectReference: {fileID: 303460434}
@@ -23433,6 +23437,10 @@ PrefabInstance:
     - target: {fileID: 577426324227038327, guid: a74555785d971a64d8b093da0491233c, type: 3}
       propertyPath: code
       value: 69420
+      objectReference: {fileID: 0}
+    - target: {fileID: 577426324227038327, guid: a74555785d971a64d8b093da0491233c, type: 3}
+      propertyPath: score
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 577426324227038327, guid: a74555785d971a64d8b093da0491233c, type: 3}
       propertyPath: keyPress
